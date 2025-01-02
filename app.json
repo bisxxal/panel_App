@@ -1,0 +1,46 @@
+{
+  "expo": {
+    "name": "wallpaper-app",
+    "slug": "wallpaper-app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "https://c4.wallpaperflare.com/wallpaper/509/725/278/lenovo-logo-simple-background-computer-black-background-hd-wallpaper-preview.jpg",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "https://c4.wallpaperflare.com/wallpaper/509/725/278/lenovo-logo-simple-background-computer-black-background-hd-wallpaper-preview.jpg",
+      "resizeMode": "contain",
+      "backgroundColor": "#000000"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "https://c4.wallpaperflare.com/wallpaper/509/725/278/lenovo-logo-simple-background-computer-black-background-hd-wallpaper-preview.jpg",
+        "backgroundColor": "#000000"
+      }
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
+    },
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "https://c4.wallpaperflare.com/wallpaper/509/725/278/lenovo-logo-simple-background-computer-black-background-hd-wallpaper-preview.jpg",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#000000"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}
