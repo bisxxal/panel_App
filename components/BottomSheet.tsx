@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef } from 'react';
-import { View, Text, StyleSheet, Image, Button, useColorScheme, TouchableOpacity, Pressable } from 'react-native';
+import { View, Text, StyleSheet, Image, Button, useColorScheme, TouchableOpacity, Pressable, ScrollView } from 'react-native';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import BottomSheet, { BottomSheetView } from '@gorhom/bottom-sheet';
 import { Wallpaper } from '@/hooks/useWallpaper';
@@ -9,9 +9,10 @@ import * as MediaLibrary from 'expo-media-library';
 import * as FileSystem from 'expo-file-system';
 import { ThemedView } from './ThemedView';
 import { ThemedText } from './ThemedText';
+import { LinearGradient } from 'expo-linear-gradient';
 
 
-const DownloadPicture = ({wallpaper ,onClose}:{wallpaper:Wallpaper , onClose:()=>void}) => { 
+const DownloadPicture = ({wallpaper ,onClose}:{wallpaper:any , onClose:()=>void}) => { 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const handleSheetChanges = useCallback((index: number) => {
   }, []);
@@ -21,16 +22,18 @@ const DownloadPicture = ({wallpaper ,onClose}:{wallpaper:Wallpaper , onClose:()=
       <BottomSheet
         ref={bottomSheetRef}
         onChange={handleSheetChanges}
-        snapPoints={['99%']}
+        snapPoints={['95%']}
         onClose={onClose}
         enablePanDownToClose={true}
         handleIndicatorStyle={{ height:0 , display: 'none' }} 
         handleStyle={{ display: 'none' }}
       >
-        <BottomSheetView style={styles.contentContainer}>
-          <Image className=' relative rounded-t-3xl h-[60%] w-full ' source={{uri:wallpaper.url}}/>
+        <BottomSheetView className=' bg-red-200 relative flex-1' >
+          <LinearGradient colors={['black', 'transparent']} className='absolute z-20  w-full h-20 '>
+            <Image className=' relative rounded-t-3xl h-[500px] w-full ' source={{uri:wallpaper?.urls?.full}}/>
+          </LinearGradient>
 
-          <TouchableOpacity className='w-full flex flex-row justify-between p-5 absolute'>
+          <TouchableOpacity className='w-full z-20 flex flex-row justify-between p-5 absolute'>
               <Ionicons
                 name={'close'}
                 size={24}
@@ -51,17 +54,23 @@ const DownloadPicture = ({wallpaper ,onClose}:{wallpaper:Wallpaper , onClose:()=
             />
              </View>
           </TouchableOpacity>
-          <ThemedView  >
-            <ThemedText  >{wallpaper.name}</ThemedText>
-          </ThemedView>
-          <DownloadButton url={wallpaper.url} />  
+          <ScrollView className=' bg-zinc-800 flex  absolute bottom-1 h-96 w-full flex1'>
+          <DownloadButton url={wallpaper?.urls?.full} />  
+
+
+            <View className=' flex flex-row items-center gap-3 p-5'> 
+              <Image className='mt- w-12 h-12 rounded-full' source={{uri:wallpaper?.user?.profile_image?.small}}/>
+              <Text className='text-white font-semibold ' >{wallpaper.user.name}</Text>
+            </View>
+ 
+          </ScrollView>
         </BottomSheetView>
       </BottomSheet> 
   );
 };
 function DownloadButton({ url }: { url: string }) {
   const theme = useColorScheme() ?? 'light';
-  return <Pressable onPress={async () => {
+  return <TouchableOpacity className=' flex flex-row items-center py-6 rounded-xl w-5/6 mx-auto ml-10 justify-center bg-black' onPress={async () => {
     let date = new Date().getTime();
     let fileUri = FileSystem.documentDirectory + `${date}.jpg`;
     
@@ -72,40 +81,28 @@ function DownloadButton({ url }: { url: string }) {
           MediaLibrary.createAssetAsync(fileUri)
           alert("Image saved")
         } else {
-          console.error("permission not granted")
         }
     } catch (err) {
         console.log("FS Err: ", err)
     }
-  }} style={{
-    backgroundColor: "black",
-    padding: 10,
-    marginHorizontal: 40,
-    marginVertical: 20,
-    justifyContent: "center",
-    flexDirection: "row",
-    borderRadius: 10,
-    borderWidth: 1,
-    borderColor: theme === 'light' ? Colors.light.text : Colors.dark.icon,
-  }}>
+  }}  >
     <Ionicons
       name={'download'}
       size={24}
       color={theme === 'light' ? Colors.light.icon : Colors.dark.icon}
       style={{paddingRight: 4}}
     />
-    <Text style={{
+    <Text className=' text-center' style={{
       fontSize: 20,
       color: "white",
       fontWeight: "600",
     }}>Download</Text>
-  </Pressable>
+  </TouchableOpacity>
 }
 const styles = StyleSheet.create({
   
-  contentContainer: {
-    flex: 1,
-    position: 'relative',
+  contentContainer: { 
+    width: '100%',
     paddingTop: 0,
     alignItems: 'center', 
   },

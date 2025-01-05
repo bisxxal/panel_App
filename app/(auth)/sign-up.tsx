@@ -47,7 +47,7 @@ export default function Page() {
       <Image className='flex-1 h-full w-full' source={{uri:'https://images.unsplash.com/photo-1500817487388-039e623edc21?q=80&w=2571&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'}} />
         
         <TouchableOpacity className='absolute top-60 text-2xl'>
-          <Text className=' font-bold '>Wellcome to panels</Text>
+          <Text className=' font-bold text-5xl text-[#ffffffca]'>Wellcome to panels</Text>
            </TouchableOpacity>
 
       <TouchableOpacity className='flex items-center flex-row gap-2 backdrop-blur-md border-2 border-[#ffffff27] px-12 rounded-3xl p-4 absolute bottom-24 ' onPress={onPress}>
@@ -56,7 +56,7 @@ export default function Page() {
       </TouchableOpacity>
 
       <Link className=' absolute bottom-10 ' href="/(tabs)">
-        <Text className='text-lg text-white'>Skip for now</Text>
+        <Text className=' text-zinc-400'>Skip for now</Text>
       </Link>
 
     </View>

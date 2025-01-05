@@ -1,26 +1,38 @@
 import { SignedIn, SignedOut } from '@clerk/clerk-expo'; 
 import {   Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';   
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'; 
-import { useLibraryWallpapers, useLikedWallpapers, userimg, useSuggestedWallpapers, useWallpapers } from '@/hooks/useWallpaper'; 
+import { FullWallpaper, NewWallpaper, useLibraryWallpapers, useLikedWallpapers, userimg, useSuggestedWallpapers, useWallpapers, Wallpaper } from '@/hooks/useWallpaper'; 
 import { ThemedView } from '@/components/ThemedView';
 import SplitViewWallpaper from '@/components/SplitViewWallpaper';
+import { useEffect, useState } from 'react';
+import DownloadPicture from '@/components/BottomSheet';
+import { Link } from 'expo-router'; 
+import axios from 'axios';
+import { useUnsplace } from '@/hooks/useUnsplase';
 
 const Tab = createMaterialTopTabNavigator();
-
+ 
 
 export default function HomeScreen() {
-  // const headerimg = 'https://images.unsplash.com/photo-1731432245362-26f9c0f1ba2f?q=80&w=2942&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+  
   return ( 
   <SafeAreaView className=' bg-transparent flex-1'>
   <ThemedView className='flex-1 pt-4'>
 
-  <View className='flex items-center justify-center w-full p-4 h-40 bg-gray-900'>
+  <View className='flex items-center justify-center w-full p-4 h-40 bg-[#212121]'>
+    <Link href="/(tabs)/account">
       <Image className=' h-20 w-20 rounded-full' source={{uri: userimg}} />
+      </Link>
   </View>
    <Tab.Navigator
     screenOptions={{
-      tabBarActiveTintColor: '#ff6a00',
-      tabBarStyle: { backgroundColor: 'black' },
+      // tabBarActiveTintColor: '#ff6a00',
+      tabBarStyle: { backgroundColor: '#212121' },
+      tabBarIndicatorStyle:{
+        backgroundColor: '#ff6a00',
+        height: 5,
+      },
+      tabBarLabelStyle: { fontSize: 16 , fontWeight: 'bold'},
     }}
     >
     <Tab.Screen name="Suggested" component={Suggested} />
@@ -35,26 +47,62 @@ export default function HomeScreen() {
 }
 
 const Suggested = () => { 
+    const [selectedWallpaper, setSelectedWallpaper] = useState<null | NewWallpaper>(null)
   const wallpapers = useSuggestedWallpapers();
+
+  const [img, setImg] = useState([])
+  useEffect(() => {
+    const fetchApi = async () => {
+      setImg(await useUnsplace())
+    }
+    fetchApi() 
+    
+  }, [])
+
   return (
     <ThemedView   className=' flex-1'>
-      <SplitViewWallpaper wallpapers={wallpapers} />
+      
+      <SplitViewWallpaper setSelectedWallpaper={setSelectedWallpaper}   wallpapers={img} />
+      {selectedWallpaper && <DownloadPicture wallpaper={selectedWallpaper} onClose={() => setSelectedWallpaper(null)} />}
     </ThemedView>
   );
 }
 const Library = () => { 
+    const [selectedWallpaper, setSelectedWallpaper] = useState<null | NewWallpaper>(null)
   const wallpapers = useLibraryWallpapers();
+
+  const [img, setImg] = useState([])
+  useEffect(() => {
+    const fetchApi = async () => {
+      setImg(await useUnsplace())
+    }
+    fetchApi() 
+    
+  }, [])
   return (
     <ThemedView   className=' flex-1'>
-      <SplitViewWallpaper wallpapers={wallpapers} />
+      <SplitViewWallpaper setSelectedWallpaper={setSelectedWallpaper}   wallpapers={img} />
+      {selectedWallpaper && <DownloadPicture wallpaper={selectedWallpaper} onClose={() => setSelectedWallpaper(null)} />}
     </ThemedView>
   );
 }
 const Liked = () => { 
+    const [selectedWallpaper, setSelectedWallpaper] = useState<null | NewWallpaper>(null)
   const wallpapers = useLikedWallpapers();
+
+  const [img, setImg] = useState([])
+  useEffect(() => {
+    const fetchApi = async () => {
+      setImg(await useUnsplace())
+    }
+    fetchApi() 
+    
+  }, [])
+
   return (
     <ThemedView  className=' flex-1' >
-      <SplitViewWallpaper wallpapers={wallpapers} />
+      <SplitViewWallpaper setSelectedWallpaper={setSelectedWallpaper}   wallpapers={img} />
+      {selectedWallpaper && <DownloadPicture wallpaper={selectedWallpaper} onClose={() => setSelectedWallpaper(null)} />}
     </ThemedView>
   );
 }
