@@ -1,9 +1,10 @@
 
-import { View, StyleSheet, Image, useColorScheme, Pressable } from "react-native";
+import { View, StyleSheet, Image, useColorScheme, Pressable, ActivityIndicator } from "react-native";
 import { ThemedText } from "./ThemedText";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from '@/constants/Colors';
 import { NewWallpaper, Wallpaper } from "@/hooks/useWallpaper";
+import { useState } from "react";
 
 export interface FullWallpaper extends Wallpaper {
     liked: boolean;
@@ -16,9 +17,38 @@ export function ImageCard({ wallpaper, onPress }: {
     onPress?: () => void
 }) {
     const theme = useColorScheme() ?? 'light';
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(false);
+
+    // Use thumbnail/small size for list view performance
+    const imageUrl = wallpaper?.urls?.small || wallpaper?.urls?.regular || wallpaper?.urls?.full;
+    
     return <Pressable onPress={onPress}>
         <View>
-            <Image source={{uri: wallpaper?.urls?.full}} style={styles.image} />
+            <View style={styles.imageContainer}>
+                <Image 
+                    source={{uri: imageUrl}} 
+                    style={styles.image}
+                    onLoad={() => setLoading(false)}
+                    onError={() => {
+                        setError(true);
+                        setLoading(false);
+                    }}
+                    // Performance optimizations
+                    resizeMode="cover"
+                    fadeDuration={200}
+                />
+                {loading && (
+                    <View style={styles.loadingContainer}>
+                        <ActivityIndicator size="small" color="#ff6a00" />
+                    </View>
+                )}
+                {error && (
+                    <View style={styles.errorContainer}>
+                        <Ionicons name="image-outline" size={40} color="#666" />
+                    </View>
+                )}
+            </View>
             <View style={styles.labelContainer}>
                 <ThemedText className=" text-sm" style={styles.label}>{wallpaper.name}</ThemedText>
                 <View style={styles.iconContainer}>
@@ -39,10 +69,36 @@ const styles = StyleSheet.create({
         display: "flex",
         justifyContent: "center"
     },
+    imageContainer: {
+        position: 'relative',
+        height: 220,
+        borderRadius: 20,
+        overflow: 'hidden',
+    },
     image: {
         flex: 1,
         height: 220,
         borderRadius: 20
+    },
+    loadingContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#1a1a1a',
+    },
+    errorContainer: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: '#1a1a1a',
     },
     label: {
         color: "white"

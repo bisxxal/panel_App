@@ -107,7 +107,7 @@
 // });
 
 
-import React, { PropsWithChildren } from 'react';
+import   { PropsWithChildren } from 'react';
 import { Dimensions, Image, StyleSheet, Text, View, FlatList } from 'react-native';
 import Animated, {
   interpolate,

@@ -13,10 +13,12 @@ export interface NewWallpaper{
     id: string;
     urls: {
         full: string;
+        regular?: string;
+        small?: string;
+        thumb?: string;
     }
     name: string;
     liked: boolean;
-
 }
 export function useSuggestedWallpapers(): FullWallpaper[] {
     const wallpapers = useWallpapers();

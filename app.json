@@ -11,7 +11,7 @@
     "splash": {
       "image": "https://c4.wallpaperflare.com/wallpaper/509/725/278/lenovo-logo-simple-background-computer-black-background-hd-wallpaper-preview.jpg",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#0E0E0E"
     },
     "ios": {
       "supportsTablet": true
@@ -19,7 +19,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "https://c4.wallpaperflare.com/wallpaper/509/725/278/lenovo-logo-simple-background-computer-black-background-hd-wallpaper-preview.jpg",
-        "backgroundColor": "#000000"
+        "backgroundColor": "#0E0E0E"
       }
     },
     "web": {
@@ -35,7 +35,7 @@
           "image": "https://c4.wallpaperflare.com/wallpaper/509/725/278/lenovo-logo-simple-background-computer-black-background-hd-wallpaper-preview.jpg",
           "imageWidth": 200,
           "resizeMode": "contain",
-          "backgroundColor": "#000000"
+          "backgroundColor": "#0E0E0E"
         }
       ]
     ],

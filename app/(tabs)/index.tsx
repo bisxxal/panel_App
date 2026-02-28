@@ -1,4 +1,4 @@
-import { SignedIn, SignedOut } from '@clerk/clerk-expo'; 
+
 import {   Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';   
 import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs'; 
 import { FullWallpaper, NewWallpaper, useLibraryWallpapers, useLikedWallpapers, userimg, useSuggestedWallpapers, useWallpapers, Wallpaper } from '@/hooks/useWallpaper'; 
@@ -7,7 +7,6 @@ import SplitViewWallpaper from '@/components/SplitViewWallpaper';
 import { useEffect, useState } from 'react';
 import DownloadPicture from '@/components/BottomSheet';
 import { Link } from 'expo-router'; 
-import axios from 'axios';
 import { useUnsplace } from '@/hooks/useUnsplase';
 
 const Tab = createMaterialTopTabNavigator();
@@ -48,63 +47,171 @@ export default function HomeScreen() {
 
 const Suggested = () => { 
     const [selectedWallpaper, setSelectedWallpaper] = useState<null | NewWallpaper>(null)
-  const wallpapers = useSuggestedWallpapers();
+    const wallpapers = useSuggestedWallpapers();
 
-  const [img, setImg] = useState([])
-  useEffect(() => {
-    const fetchApi = async () => {
-      setImg(await useUnsplace())
+    const [img, setImg] = useState<NewWallpaper[]>([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                setLoading(true)
+                setError(null)
+                const data = await useUnsplace(5, 30) // Use optimized API call
+                setImg(data)
+            } catch (err) {
+                setError('Failed to load wallpapers')
+                console.error('Error loading wallpapers:', err)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchApi() 
+    }, [])
+
+    if (loading) {
+        return (
+            <ThemedView className='flex-1 justify-center items-center'>
+                <Text className='text-white text-lg'>Loading wallpapers...</Text>
+            </ThemedView>
+        )
     }
-    fetchApi() 
-    
-  }, [])
 
-  return (
-    <ThemedView   className=' flex-1'>
-      
-      <SplitViewWallpaper setSelectedWallpaper={setSelectedWallpaper}   wallpapers={img} />
-      {selectedWallpaper && <DownloadPicture wallpaper={selectedWallpaper} onClose={() => setSelectedWallpaper(null)} />}
-    </ThemedView>
-  );
+    if (error) {
+        return (
+            <ThemedView className='flex-1 justify-center items-center'>
+                <Text className='text-red-500 text-lg'>{error}</Text>
+            </ThemedView>
+        )
+    }
+
+    return (
+        <ThemedView className='flex-1'>
+            <SplitViewWallpaper 
+                setSelectedWallpaper={setSelectedWallpaper}   
+                wallpapers={img} 
+            />
+            {selectedWallpaper && (
+                <DownloadPicture 
+                    wallpaper={selectedWallpaper} 
+                    onClose={() => setSelectedWallpaper(null)} 
+                />
+            )}
+        </ThemedView>
+    );
 }
 const Library = () => { 
     const [selectedWallpaper, setSelectedWallpaper] = useState<null | NewWallpaper>(null)
-  const wallpapers = useLibraryWallpapers();
+    const wallpapers = useLibraryWallpapers();
 
-  const [img, setImg] = useState([])
-  useEffect(() => {
-    const fetchApi = async () => {
-      setImg(await useUnsplace())
+    const [img, setImg] = useState<NewWallpaper[]>([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                setLoading(true)
+                setError(null)
+                const data = await useUnsplace(3, 30) // Different page for variety
+                setImg(data)
+            } catch (err) {
+                setError('Failed to load wallpapers')
+                console.error('Error loading wallpapers:', err)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchApi()
+    }, [])
+
+    if (loading) {
+        return (
+            <ThemedView className='flex-1 justify-center items-center'>
+                <Text className='text-white text-lg'>Loading library...</Text>
+            </ThemedView>
+        )
     }
-    fetchApi() 
-    
-  }, [])
-  return (
-    <ThemedView   className=' flex-1'>
-      <SplitViewWallpaper setSelectedWallpaper={setSelectedWallpaper}   wallpapers={img} />
-      {selectedWallpaper && <DownloadPicture wallpaper={selectedWallpaper} onClose={() => setSelectedWallpaper(null)} />}
-    </ThemedView>
-  );
+
+    if (error) {
+        return (
+            <ThemedView className='flex-1 justify-center items-center'>
+                <Text className='text-red-500 text-lg'>{error}</Text>
+            </ThemedView>
+        )
+    }
+
+    return (
+        <ThemedView className='flex-1'>
+            <SplitViewWallpaper 
+                setSelectedWallpaper={setSelectedWallpaper}   
+                wallpapers={img} 
+            />
+            {selectedWallpaper && (
+                <DownloadPicture 
+                    wallpaper={selectedWallpaper} 
+                    onClose={() => setSelectedWallpaper(null)} 
+                />
+            )}
+        </ThemedView>
+    );
 }
 const Liked = () => { 
     const [selectedWallpaper, setSelectedWallpaper] = useState<null | NewWallpaper>(null)
-  const wallpapers = useLikedWallpapers();
+    const wallpapers = useLikedWallpapers();
 
-  const [img, setImg] = useState([])
-  useEffect(() => {
-    const fetchApi = async () => {
-      setImg(await useUnsplace())
+    const [img, setImg] = useState<NewWallpaper[]>([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState<string | null>(null)
+
+    useEffect(() => {
+        const fetchApi = async () => {
+            try {
+                setLoading(true)
+                setError(null)
+                const data = await useUnsplace(7, 30) // Different page for variety
+                setImg(data)
+            } catch (err) {
+                setError('Failed to load wallpapers')
+                console.error('Error loading wallpapers:', err)
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchApi() 
+    }, [])
+
+    if (loading) {
+        return (
+            <ThemedView className='flex-1 justify-center items-center'>
+                <Text className='text-white text-lg'>Loading liked wallpapers...</Text>
+            </ThemedView>
+        )
     }
-    fetchApi() 
-    
-  }, [])
 
-  return (
-    <ThemedView  className=' flex-1' >
-      <SplitViewWallpaper setSelectedWallpaper={setSelectedWallpaper}   wallpapers={img} />
-      {selectedWallpaper && <DownloadPicture wallpaper={selectedWallpaper} onClose={() => setSelectedWallpaper(null)} />}
-    </ThemedView>
-  );
+    if (error) {
+        return (
+            <ThemedView className='flex-1 justify-center items-center'>
+                <Text className='text-red-500 text-lg'>{error}</Text>
+            </ThemedView>
+        )
+    }
+
+    return (
+        <ThemedView className='flex-1'>
+            <SplitViewWallpaper 
+                setSelectedWallpaper={setSelectedWallpaper}   
+                wallpapers={img} 
+            />
+            {selectedWallpaper && (
+                <DownloadPicture 
+                    wallpaper={selectedWallpaper} 
+                    onClose={() => setSelectedWallpaper(null)} 
+                />
+            )}
+        </ThemedView>
+    );
 }
 
 const styles = StyleSheet.create({

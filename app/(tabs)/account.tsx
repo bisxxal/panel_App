@@ -1,8 +1,7 @@
 import { View, Text, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native'
 import React, { useEffect } from 'react'
-import { SignedIn } from '@clerk/clerk-expo'
+import { SignedIn, SignedOut } from '@clerk/clerk-expo'
 import SignOutButton from '../(auth)/SignedOut'
-import { SignedOut, SignUpButton } from '@clerk/clerk-react'
 import { Link, useRouter } from 'expo-router'
 import { AntDesign } from '@expo/vector-icons' 
 

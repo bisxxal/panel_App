@@ -4,7 +4,7 @@ import ParallaxScrollView from '@/components/ParallaxScrollView';
 import SplitViewWallpaper from '@/components/SplitViewWallpaper';
 import { NewWallpaper, useCarousel, useWallpapers, Wallpaper } from '@/hooks/useWallpaper';
 import { useEffect, useState } from 'react';
-import { StyleSheet, Image, Platform, Text, SafeAreaView, Button, View, FlatList, Dimensions } from 'react-native';
+import { StyleSheet,  FlatList,  } from 'react-native';
  
 import { ThemedSafeAreaView } from '@/components/ThemedSafeAreaView';
 import { useUnsplace } from '@/hooks/useUnsplase';
